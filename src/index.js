@@ -1,7 +1,10 @@
-import React from 'react';
+import React from 'react'
+import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
+import Content from './components/Content';
+import Country from './components/Country';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
@@ -12,7 +15,14 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Content />} />
+            <Route path=":countryID" element={<Country />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );
