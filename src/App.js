@@ -10,10 +10,12 @@ import { fetchCountries } from './features/counter/countriesSlice'
 function App() {
 
   const theme = useSelector(state => state.theme)
-
+  const data = useSelector(state => state.countries)
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchCountries())
+    if (data.countries.length <= 0) {
+      dispatch(fetchCountries())
+    }
   })
 
 

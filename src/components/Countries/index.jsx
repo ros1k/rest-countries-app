@@ -3,11 +3,15 @@ import styled from "styled-components"
 import CountryCard from "./item"
 
 const CountriesList = () => {
+  
     const AllCountries = useSelector(state => state.countries.countries)
     return (
         <List>
-             {AllCountries.map((e,i)=>{ return <CountryCard key={i} {...e}/>})} 
-        
+             {
+                AllCountries.map((e,i)=>{ 
+                    const linkUrl = e.name.common.replace(" ", "_")
+                    return <CountryCard key={i} linkUrl={linkUrl} {...e}/>
+                    })} 
         </List>
   )
 }

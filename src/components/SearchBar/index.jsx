@@ -1,23 +1,25 @@
 
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faChevronDown,faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import { useRef, useState } from "react"
-
+import { searchForCountry } from "../../features/counter/countriesSlice"
 
 const FilterValues = ['Africa','America','Asia','Europa','Oceania','Clear Filter']
 
 
 const SearchBar = () => {
     const theme = useSelector(state => state.theme)
+    
     const textColor = theme.themeColors.text;
     const elBackground = theme.themeColors.element;
     const [currentFilter, setCurrentFilter] = useState('Filter by region ')
+
     const selectRef = useRef();
     const listItemRef = useRef([])
+    const dispatch = useDispatch();
     const handleSelectClick = (e) =>{
-
         if(e.target.classList.contains('active')){
             e.target.classList.remove('active')
         }else{
@@ -32,7 +34,10 @@ const SearchBar = () => {
     <SearchBarWrapper>
         <SearchWrapper bg={elBackground} >
             <SearchIcon icon={faMagnifyingGlass} />
-            <Search textColor={theme.themeColors.text}/>
+            <SearchInput 
+                textColor={theme.themeColors.text}
+                onKeyUp={e=> dispatch(searchForCountry(e.target.value))}
+                />
         </SearchWrapper>
         <SelectButton 
             textColor={textColor}
@@ -82,7 +87,7 @@ const SearchWrapper = styled.div`
 const SearchIcon = styled(FontAwesomeIcon)`
    margin: 0 25px 0 15px;
 `
-const Search = styled.input.attrs({
+const SearchInput = styled.input.attrs({
     onChange: null,
     type: 'text',
     placeholder: 'Search for a country ...'
@@ -111,7 +116,7 @@ const List = styled.ul`
     flex-direction:column;
     align-items: flex-start;
     transition: all 0.2s ease;
- 
+    z-index: 2;
     color:${props => props.textColor};
     li{
         background-color: ${props => props.bg};

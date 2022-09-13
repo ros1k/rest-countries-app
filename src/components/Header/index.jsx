@@ -3,20 +3,20 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { changeTheme } from "../../features/counter/themeSlice"
 import Container from '../Container'
-import { faMoon , faSun} from "@fortawesome/free-solid-svg-icons"
-
+import { faMoon , faSun } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 
 const Header = () => {
     const theme = useSelector(state => state.theme);
     const dispatch = useDispatch();
-
+    
   return (
     <HeaderWrapper 
         bg={theme.themeColors.element}
     >
         <Container flex={'row'}>
-            <Text> Where in the world? </Text>
+            <HeaderLink textColor={theme.themeColors.text} to="/">Where in the world? </HeaderLink>
             <ThemeChanger 
                 textColor={theme.themeColors.text}
                 onClick={() => dispatch(changeTheme())}>
@@ -33,9 +33,9 @@ const HeaderWrapper = styled.header`
     background-color: ${props => props.bg};
  
 `
-
-const Text = styled.p`
-    
+const HeaderLink = styled(Link)`
+     color:${props => props.textColor};
+     text-decoration: none;
 `
 const ThemeChanger = styled.button`
     cursor: pointer;

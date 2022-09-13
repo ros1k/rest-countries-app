@@ -1,21 +1,28 @@
 import { useSelector } from "react-redux"
 import styled from "styled-components"
+import { Link }from 'react-router-dom'
+import {useState} from 'react'
 
 
-const CountryCard = ({flags,name,population,region,capital}) => {
+
+
+const CountryCard = ({flags,name,population,region,capital,linkUrl}) => {
     const theme = useSelector(state => state.theme)
+    const [nameLength, setNameLength] = useState(name.common.length)
+ 
   
     return (
     <SingleCountry textColor={theme.themeColors.text} bg={theme.themeColors.element}>
-        <FlagWrapper>
-            <Flag src={flags.png}/>
-        </FlagWrapper>
-        <CountryInfo>
-            <Country>{name.common}</Country>
-            <Info><Title>Population:</Title>{population}</Info>
-            <Info><Title>Region:</Title>{region}</Info>
-            <Info><Title>Capital:</Title>{capital}</Info>
-        </CountryInfo>
+        <LinkWrapper to={"/" + linkUrl}></LinkWrapper>
+            <FlagWrapper>
+                <Flag src={flags.png}/>
+            </FlagWrapper>
+            <CountryInfo>
+                <Country style={{fontSize: nameLength < 25 ? '18px' : '15px'}}>{name.common}</Country>
+                <Info><Title>Population:</Title>{population}</Info>
+                <Info><Title>Region:</Title>{region}</Info>
+                <Info><Title>Capital:</Title>{capital}</Info>
+            </CountryInfo>
     </SingleCountry>
   )
 }
@@ -23,6 +30,7 @@ const CountryCard = ({flags,name,population,region,capital}) => {
 export default CountryCard
 
 const SingleCountry = styled.li`
+    position:relative;
     border-radius: 6px;
     display:flex;
     flex-direction: column;
@@ -37,6 +45,14 @@ const SingleCountry = styled.li`
         margin-right: 0;
     }
 `
+const LinkWrapper = styled(Link)`
+    position: absolute;
+    display:block;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+`
 const FlagWrapper = styled.div`
     flex: 1 0 30%;
 `
@@ -49,7 +65,8 @@ const CountryInfo = styled.div`
     flex: 1 0 70%;
 `
 const Country = styled.h2`
-    font-size:20px;
+    font-size:18px;
+    font-weight:700;
     text-transform: capitalize;
     margin-bottom: 10px;
 `
