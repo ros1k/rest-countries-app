@@ -8,5 +8,6 @@ export const store = configureStore({
     theme: themeReducer,
     countries: countriesSlice
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(searchInputMiddleware)
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(searchInputMiddleware),
+  devTools: process.env.NODE_ENV !== 'production',
 });

@@ -16,7 +16,7 @@ const Header = () => {
         bg={theme.themeColors.element}
     >
         <Container flex={'row'}>
-            <HeaderLink textColor={theme.themeColors.text} to="/">Where in the world? </HeaderLink>
+            <HeaderLink to="/" textcolor={theme.themeColors.text}>Where in the world? </HeaderLink>
             <ThemeChanger 
                 textColor={theme.themeColors.text}
                 onClick={() => dispatch(changeTheme())}>
@@ -34,7 +34,7 @@ const HeaderWrapper = styled.header`
  
 `
 const HeaderLink = styled(Link)`
-     color:${props => props.textColor};
+     color: ${props => props.textcolor};
      text-decoration: none;
 `
 const ThemeChanger = styled.button`

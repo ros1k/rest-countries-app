@@ -13,10 +13,8 @@ function App() {
   const data = useSelector(state => state.countries)
   const dispatch = useDispatch();
   useEffect(() => {
-    if (data.countries.length <= 0) {
-      dispatch(fetchCountries())
-    }
-  })
+    dispatch(fetchCountries())
+  }, [localStorage.getItem('FetchedCountries')])
 
 
   return (

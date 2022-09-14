@@ -13,10 +13,18 @@ const ApiUrl = 'https://restcountries.com/v3.1/all'
 export const fetchCountries = createAsyncThunk(
   'countries/fetchAllCountries',
   async () => {
-    const response = await fetch(ApiUrl).then(resp => resp.json());
+    if (!localStorage.getItem('FetchedCountries')) {
+      const response = await fetch(ApiUrl).then(resp => resp.json());
+      localStorage.setItem('FetchedCountries', JSON.stringify(response));
+      return response;
+    } else {
+      const response = JSON.parse(localStorage.getItem('FetchedCountries'));
+      return response
+
+    }
 
     // The value we return becomes the `fulfilled` action payload
-    return response;
+
   }
 );
 
@@ -40,22 +48,83 @@ export const countriesSlice = createSlice({
     loading: 'idle',
     data: [],
     filter: 'all',
+    lookingFor: '',
     countries: [],
+
     error: false
   },
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    searchForCountry: (state, action) => {
+    searchForCountry: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // console.log(action.payload);
+      const newCountries = []
       if (state.filter === 'all') {
-        state.countries = action.payload
+        state.data.map((e, i) => {
+          const country = e.name.common
+          if (country.toLowerCase().includes(state.lookingFor)) {
+            newCountries.push(e)
+          }
+          return null
+        })
       } else {
-
+        state.data.map((e, i) => {
+          if (e.region === state.filter) {
+            if (state.lookingFor === "") {
+              newCountries.push(e)
+            } else {
+              const country = e.name.common
+              if (country.toLowerCase().includes(state.lookingFor)) {
+                newCountries.push(e)
+              }
+            }
+          }
+          return null
+        })
       }
 
+
+      state.countries = newCountries;
+    },
+    setSearchingName: (state, action) => {
+
+      if (action.payload.toLowerCase() !== state.lookingFor) {
+        state.lookingFor = action.payload.toLowerCase()
+      }
+
+
+    },
+    setFilter: (state, action) => {
+      action.payload === "Filter by region" ? state.filter = 'all' : state.filter = action.payload
+      const newCountries = []
+      state.data.map((e, i) => {
+        if (state.filter === 'all') {
+          if (state.lookingFor === "") {
+            newCountries.push(e)
+          } else {
+            const country = e.name.common
+            if (country.toLowerCase().includes(state.lookingFor)) {
+              newCountries.push(e)
+            }
+          }
+
+        } else {
+          if (e.region === state.filter) {
+            if (state.lookingFor === "") {
+              newCountries.push(e)
+            } else {
+              const country = e.name.common
+              if (country.toLowerCase().includes(state.lookingFor)) {
+                newCountries.push(e)
+              }
+            }
+          }
+        }
+        return null
+      })
+      state.countries = newCountries;
     },
     // const linkUrl = e.name.common.replace(" ", "_")
     // searchForCountry: (state, action) => {
@@ -80,7 +149,6 @@ export const countriesSlice = createSlice({
         state.loading = 'finished'
         // const linkUrl = e.name.common.replace(" ", "_")
         state.data = action.payload;
-
         state.countries = action.payload;
       })
       .addCase(fetchCountries.rejected, (state, { meta, payload, error }) => {
@@ -91,25 +159,25 @@ export const countriesSlice = createSlice({
 
 });
 
-export const { searchForCountry } = countriesSlice.actions;
+export const { searchForCountry, setFilter, setSearchingName } = countriesSlice.actions;
 
-export const searchInputMiddleware = store => next => action => {
-  console.log('searchINputMiddleware');
+// export const searchInputMiddleware = store => next => action => {
 
-  if (action.type === 'countries/searchForCountry') {
-    const newCountries = []
-    store.getState().countries.data.map((e, i) => {
-      const country = e.name.common
-      if (country.toLowerCase().includes(action.payload.toLowerCase())) {
-        newCountries.push(e)
-      }
-    })
+//   if (action.type === 'countries/searchForCountry') {
 
-    action.payload = newCountries
-    return next(action)
-  }
-  return next(action)
-}
+//     // const newCountries = []
+//     // store.getState().countries.data.map((e, i) => {
+//     //   const country = e.name.common
+//     //   if (country.toLowerCase().includes(action.payload.toLowerCase())) {
+//     //     newCountries.push(e)
+//     //   }
+//     // })
+
+//     // action.payload = newCountries
+//     return next(action)
+//   }
+//   return next(action)
+// }
 
 
 export default countriesSlice.reducer;

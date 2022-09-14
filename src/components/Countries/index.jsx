@@ -25,4 +25,19 @@ const List = styled.ul`
     gap: 80px;
     width: 100%;
     list-style: none;
+    @media (max-width: 1300px) {
+        grid-template-columns: repeat(3, 1fr);
+        align-content: space-between;
+        justify-content: space-evenly;
+  }
+  @media (max-width: 992px) {
+        grid-template-columns: repeat(2, 1fr);
+        align-content: space-between;
+        justify-content: space-evenly;
+  }
+  @media (max-width: 768px) {
+        grid-template-columns: repeat(1, 1fr);
+        align-content: space-between;
+        justify-content: space-evenly;
+  }
 `

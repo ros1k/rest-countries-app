@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faChevronDown,faChevronUp } from "@fortawesome/free-solid-svg-icons"
-import { useRef, useState } from "react"
-import { searchForCountry } from "../../features/counter/countriesSlice"
+import { useEffect, useRef, useState } from "react"
+import { searchForCountry, setFilter, setSearchingName} from "../../features/counter/countriesSlice"
 
-const FilterValues = ['Africa','America','Asia','Europa','Oceania','Clear Filter']
+const FilterValues = ['Africa','Americas','Asia','Europe','Oceania','Clear Filter']
 
 
 const SearchBar = () => {
     const theme = useSelector(state => state.theme)
+    const store = useSelector(state => state.countries)
     
     const textColor = theme.themeColors.text;
     const elBackground = theme.themeColors.element;
@@ -27,7 +28,18 @@ const SearchBar = () => {
         }
     }
     const handleClickListItem = (e) =>{
+        // dispatch(setFilter(e.target.dataset['value']))
+        // dispatch(searchForCountry())
+        
+
         setCurrentFilter(e.target.dataset['value'])
+        dispatch(setFilter(e.target.dataset['value']));
+        
+    }
+    
+    const handleSearch = (e) => {
+        dispatch(setSearchingName(e))
+        dispatch(searchForCountry())
     }
 
   return (
@@ -35,8 +47,10 @@ const SearchBar = () => {
         <SearchWrapper bg={elBackground} >
             <SearchIcon icon={faMagnifyingGlass} />
             <SearchInput 
+           
                 textColor={theme.themeColors.text}
-                onKeyUp={e=> dispatch(searchForCountry(e.target.value))}
+                onChange={e => handleSearch(e.target.value)}
+                onKeyUp={e=> handleSearch(e.target.value)}
                 />
         </SearchWrapper>
         <SelectButton 
@@ -45,7 +59,7 @@ const SearchBar = () => {
             onClick={e => handleSelectClick(e)}
             ref={selectRef}
             >
-            {currentFilter}
+            {currentFilter !== 'all' ? currentFilter : "Filter by region"}
             <FontAwesomeIcon className="down" icon={faChevronDown} />
             <FontAwesomeIcon className="up" icon={faChevronUp} />
             <List 
@@ -57,7 +71,7 @@ const SearchBar = () => {
                                 onClick={e => handleClickListItem(e)}
                                 key={i} 
                                 ref={listItemRef.current[i]} 
-                                data-value={e === "Clear Filter"? "Filter by region " : e}
+                                data-value={e === "Clear Filter"? "all" : e}
                                 >
                                     {e}</ListItem>
                 })}
@@ -77,11 +91,19 @@ const SearchBarWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 550px) {
+       flex-direction: column;
+       align-items: flex-start;
+    }
 `
 const SearchWrapper = styled.div`
     border-radius: 6px;
     padding:10px;
     background-color: ${props => props.bg};
+    @media (max-width: 550px) {
+       margin-bottom: 30px;
+       width: 100%;
+    }
     
 `
 const SearchIcon = styled(FontAwesomeIcon)`
@@ -103,6 +125,7 @@ const SearchInput = styled.input.attrs({
       color:${props => props.textColor}
     
   }
+  
 `
 const List = styled.ul`
     position: absolute;

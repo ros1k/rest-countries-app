@@ -64,7 +64,7 @@ const Country = () => {
         if(singleCountry.cca3 === border){
           const linkUrl = singleCountry.name.common.replace(" ", "_")
           bordersArray.push(<BorderButton 
-                textColor={theme.themeColors.text} 
+                textcolor={theme.themeColors.text} 
                 bg={theme.themeColors.element} 
                 key={linkUrl} 
                 to={"/"+linkUrl}>
@@ -115,12 +115,17 @@ export default Country;
 const BorderButton = styled(Link)`
     display: flex;
     text-decoration: none;
-    color: ${props => props.textColor};
+    color: ${props => props.textcolor};
     border-radius: 2px;
     margin-left: 10px;
     padding:2px 15px;
     background-color: ${props => props.bg};
     box-shadow: 0px 0px 4px 0px #1e1e1e;
+    @media (max-width: 576px) {
+      margin-left: 0;
+      padding:8px 25px;
+    }
+    
 `
 const Wrapper = styled.div`
   max-width:1440px;
@@ -140,6 +145,11 @@ const BackButton = styled.button`
     background-color: ${props => props.bg};
     box-shadow: 0px 0px 4px 0px #2c2c2c;
     text-transform: capitalize;
+    @media (max-width: 576px) {
+      margin-left: 0;
+      padding:10px 30px;
+      font-size:20px;
+    }
 `
 const NavWrapper = styled.div`
   margin-bottom: 50px;
@@ -149,20 +159,44 @@ const InfoWrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
   grid-column-gap: 20px;
-
+  @media (max-width: 1024px) {
+   display:flex;
+   flex-direction:column;
+   justify-content: center;
+   align-items: flex-start;
+  
+  }
 
 `
 const Flag = styled.img`
   height: 300px;
+  @media (max-width: 1024px) {
+    margin: 0 auto 50px auto;
+  }
+  @media (max-width: 576px) {
+    width:100%;
+    height:auto;
+    margin: 0 0 50px 0;
+  }
 `
 const Info = styled.div`
   display:flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
+  @media (max-width: 1024px) {
+    margin: 0 auto;
+  }
+  @media (max-width: 576px) {
+    margin: 0;
+  }
 `
 const Name = styled.h2`
   margin-bottom: 30px;
+  @media (max-width: 576px) {
+    font-size:28px;
+  }
+  
 `
 const Details = styled.div`
   max-height: 150px;
@@ -170,6 +204,11 @@ const Details = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   margin-bottom: 50px;
+
+  @media (max-width: 576px) {
+    flex-wrap: nowrap;
+    max-height: 100%;
+  }
 `
 const Desc = styled.p`
   font-weight: 600;
@@ -179,11 +218,26 @@ const Desc = styled.p`
     margin-left: 5px;
     font-weight: 400;
   }
+  @media (max-width: 576px) {
+    font-size:18px;
+   &:nth-child(4){
+    margin-bottom: 30px;
+   }
+  }
 `
 const OtherLinks = styled.div`
   display: flex;
   align-items: center;
+  @media (max-width: 576px) {
+      flex-wrap:wrap;
+      justify-content: space-between;
+   }
 `
 const OtheLinksText = styled.p`
   font-weight: 600;
+  @media (max-width: 576px) {
+    display:inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+  }
 `

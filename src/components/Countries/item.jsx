@@ -37,13 +37,27 @@ const SingleCountry = styled.li`
     height: 300px;
     color: ${props => props.textColor};
     background-color: ${props => props.bg};
-
+    margin:0 auto;
+    @media (max-width: 992px) {
+        height: 350px;
+    }
     &:nth-child(5n),&:nth-child(1){
         margin-left: 0;
     }
     &:nth-child(4n){
         margin-right: 0;
     }
+    @media (max-width: 768px) {
+        width: 300px;
+        margin:0 auto;
+        &:nth-child(5n),&:nth-child(1){
+            margin:0 auto;
+        }
+        &:nth-child(4n){
+            margin:0 auto;
+        }
+    }
+  
 `
 const LinkWrapper = styled(Link)`
     position: absolute;
@@ -58,7 +72,10 @@ const FlagWrapper = styled.div`
 `
 const Flag = styled.img`
     width: 100%;
-    height: 150px;
+   
+    @media (max-width: 992px) {
+        height: 200px;
+  }
 `
 const CountryInfo = styled.div`
     padding:15px 30px;
