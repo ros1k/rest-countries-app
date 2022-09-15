@@ -4,9 +4,9 @@ App created based on DFrontend Mentor - REST Countries API with color theme swit
 
 ## Created in React with redux toolkit
 
--- displaying countries from api
--- filtering by region
--- searching by name or letter in
+1. displaying countries from api
+2. filtering by region
+3. searching by name or letter in
 
 Link to the app: [https://ros1k.github.io/rest-countries-app/]
 
